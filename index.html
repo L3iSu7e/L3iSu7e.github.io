@@ -128,7 +128,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>L3iSu7e&#39;s Blog</strong>
+      <strong>LeiSu7e</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -224,13 +224,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bg/bg6.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bg/bg8.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="L3iSu7e"></span>
+            <span id="subtitle" data-typed-text="永远热爱生活"></span>
           
         </div>
 
@@ -268,15 +268,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/01/02/hello-world/" target="_self">
-          Hello World
+        <a href="/2024/01/03/D3CTF/" target="_self">
+          D3CTF 2023 Re Writeup
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/02/hello-world/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/03/D3CTF/" target="_self">
         <div>
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+          D3CTF 2023 RE 复现
         </div>
       </a>
 
@@ -284,8 +284,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-01-02 15:32" pubdate>
-              2024-01-02
+            <time datetime="2024-01-03 21:58" pubdate>
+              2024-01-03
             </time>
           </div>
         
@@ -408,7 +408,37 @@
       }
       var text = subtitle.getAttribute('data-typed-text');
       
-        typing(text);
+        jQuery.ajax({
+          type: 'GET',
+          url: 'https://v1.hitokoto.cn/',
+          headers: {},
+          dataType: 'json',
+          success: function(result) {
+            var apiText;
+            if (result) {
+              var keys = 'hitokoto'.split(',');
+              if (result instanceof Array) {
+                result = result[0];
+              }
+              for (const k of keys) {
+                var value = result[k];
+                if (typeof value === 'string') {
+                  apiText = value;
+                  break;
+                } else if (value instanceof Object) {
+                  result = value;
+                }
+              }
+            }
+            apiText ? typing(apiText) : typing(text);
+          },
+          error: function(xhr, status, error) {
+            if (error) {
+              console.error('Failed to request https://v1.hitokoto.cn/:', error);
+            }
+            typing(text);
+          }
+        })
       
     })(window, document);
   </script>
